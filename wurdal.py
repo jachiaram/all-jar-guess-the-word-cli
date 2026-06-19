@@ -7,8 +7,12 @@ from pydantic import BaseModel, TypeAdapter, ValidationError
 class Word(BaseModel):
     word: str 
     result: str | None = None 
-    guesses: list[str]
+    guesses: list[Guess]
 
+class Guess(BaseModel):
+    guess: str
+    colors: dict[int,str]
+    
 class Record(BaseModel):
     wins: int
     guess_count: int
@@ -113,11 +117,12 @@ def register(player_name, registered_players):
 def new_game(player_name, registered_players):
     
     # if player is not registered
-    if player_name not in registered_players:
-        print("Error: Player not found")
-        sys.exit(1)
+    if not any(player.name == player_name for player in registered_players):
+        print("Error: Player already registered.")
+        sys.exit(1) 
     
-    player = registered_players[registered_players.index(player_name)]
+    player = next(player for player in registered_players if player.name == player_name)
+    print(player.name) 
     
     # if player is already in a game
     if player.game_in_progress == True:
@@ -141,6 +146,8 @@ def select_word(player):
     while word in player.seen_words:
         idx = random.randint(0, len(word_list) - 1)
         word = word_list[idx]
+
+    player.current_word = Word(word=word, guesses=[])
 
 def guess(player, guess, registered_players):
     # if game has not started yet
