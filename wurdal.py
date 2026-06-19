@@ -110,18 +110,21 @@ def register(player_name, registered_players):
         print("Error: Invalid player name provided.")
         sys.exit(1)
     
-    player = Player(name=player_name, current_word_index=-1, seen_words=[], game_in_progress=False, record=Record(wins=0, guess_count=0))
+    player = Player(name=player_name, 
+                    current_word_index=-1, 
+                    seen_words=[],
+                    game_in_progress=False, 
+                    record=Record(wins=0, guess_count=0))
     registered_players.append(player)
 
 def new_game(player_name, registered_players):
-    
     # if player is not registered
     if not any(player.name == player_name for player in registered_players):
         print("Error: Player already registered.")
         sys.exit(1) 
     
-    player = next(player for player in registered_players if player.name == player_name)
-    print(player.name) 
+    i = next(i for i, player in enumerate(registered_players) if player.name == player_name)
+    player = registered_players[i]
     
     # if player is already in a game
     if player.game_in_progress == True:
@@ -133,22 +136,33 @@ def new_game(player_name, registered_players):
         print("Error: No more words available")
         sys.exit(1)
 
-    select_word(player)
+    word_idx = select_word(player)
+    registered_players[i] = Player(name=player.name, 
+                                   current_word_index=word_idx, 
+                                   current_word=player.current_word, 
+                                   game_in_progress=True, 
+                                   record=player.record, 
+                                   seen_words=player.seen_words)
+    
+    player = registered_players[i]
     print_board(player)
-    player.game_in_progress = True
+
 
 def select_word(player):
     # pick a random word from the word list that the player has not seen before
     idx = random.randint(0, len(word_list) - 1)
     word = word_list[idx]
-
-    while word in player.seen_words:
+    
+    while any(word == seen_word.word for seen_word in player.seen_words):
         idx = random.randint(0, len(word_list) - 1)
         word = word_list[idx]
 
     player.current_word = Word(word=word, guesses=[])
+    player.seen_words.append(player.current_word)
+    return idx
 
-def guess(player, guess_string, registered_players):
+def guess(player, guess, registered_players):
+    
     # if game has not started yet
     if player.game_in_progress == False:
         print("Error: No active game")
@@ -171,6 +185,16 @@ def guess(player, guess_string, registered_players):
     elif len(player.current_guesses) == 6:
         player.record.guess_count += 6 
 
+    grey = []
+    yellow = []
+    yellow_idx = []
+    green = []
+    # check if in word (set to yellow)
+
+    # check one to one positions for green
+    # if green -1 for dict count
+    # second iteration for yellow - if in dict and not in green and count > 0 add yellow and yellow idx, else add grey
+    colors = {}
     tally = dict()
     for c in word:
         if c in tally:
@@ -185,6 +209,13 @@ def guess(player, guess_string, registered_players):
             colors[i] = "green"
             tally[c] -= 1
 
+    # check if in position (set to green)
+    for idx in yellow_idx:
+        if guess[idx] == player.current_word.word[idx]:
+            green.append(guess[idx])
+            yellow.remove(guess[idx])
+
+    new_guess = Guess(guess_str, colors)
     # check for yellow
     for i, c in enumerate(guess):
         if i not in colors:
