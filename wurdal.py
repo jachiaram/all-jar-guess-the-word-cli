@@ -252,20 +252,25 @@ def print_board(player):
             print_board_line(guess)
 
         for i in range(6 - len(player.current_word.guesses)):
-            print_empty_board_line()
+            print_empty_board_line(count)
 
 def print_empty_board_line(count):
+    line = ""
+    spaces = ""
     for i in range(count):
-        print_empty_board_space()
-
-def print_empty_board_space():
-    print("*****  ")
-    print("*   *  ")
-    print("*****  ")
+        line += "*****  "
+        spaces += "*   *  "
+    print(line)
+    print(spaces)
+    print(line)
 
 def print_board_line(guess):
-    print("*****  *****  *****  *****  *****")
+    count = len(guess.guess)
+    line = ""
+    for i in range(count):
+        line += "*****  "  
     
+    print(line)
     guess_line = ""
     for i, c in enumerate(guess.guess):
         color = guess.colors[str(i)]
@@ -280,7 +285,7 @@ def print_board_line(guess):
         guess_line += " *  "
     print(guess_line)
 
-    print("*****  *****  *****  *****  *****")
+    print(line)
 
 def leaderboard(registered_players):
     sorted_players = player_sort(registered_players)
