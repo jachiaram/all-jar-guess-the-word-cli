@@ -6,6 +6,7 @@ name = "package-manager.aa.com"
 [packages]
 pydantic = "*"
 
+
 [dev-packages]
 pytest = "*"
 
