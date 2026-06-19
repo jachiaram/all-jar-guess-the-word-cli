@@ -10,7 +10,7 @@ class Word(BaseModel):
 
 class Guess(BaseModel):
     guess: str
-    colors: dict[int,str]
+    colors: dict
     
 class Record(BaseModel):
     wins: int
@@ -47,6 +47,9 @@ def parse_args():
     guess_parser = subparsers.add_parser('guess', help='Make a guess')
     guess_parser.add_argument('player_name', metavar='player-name')
     guess_parser.add_argument('word')
+
+    board_parser = subparsers.add_parser('board', help='Board')
+    board_parser.add_argument('player_name', metavar='player-name')
 
     # wurdal leaderboard [--by-games]
     leaderboard_parser = subparsers.add_parser('leaderboard', help='Show leaderboard')
@@ -87,11 +90,18 @@ def main():
     elif args.command == 'guess':
         print('guess')
         guess(args.player_name, args.word, registered_players)
+    elif args.command == 'board':
+        print('board')
+        print_board(find_player(args.player_name, registered_players)[1])
     elif args.command == 'leaderboard':
         print('leaderboard')
         leaderboard(registered_players)
 
     write_players(registered_players)
+
+def find_player(player_name, registered_players):
+    i = next(i for i, player in enumerate(registered_players) if player.name == player_name)
+    return i, registered_players[i]
 
 def register(player_name, registered_players):
     # if player name is empty
@@ -161,8 +171,9 @@ def select_word(player):
     player.seen_words.append(player.current_word)
     return idx
 
-def guess(player, guess, registered_players):
-    
+def guess(player_name, guess_string, registered_players):
+    i, player = find_player(player_name, registered_players) 
+
     # if game has not started yet
     if player.game_in_progress == False:
         print("Error: No active game")
@@ -180,21 +191,12 @@ def guess(player, guess, registered_players):
 
     if guess == word:
         player.record.wins += 1
-        player.record.guess_count += len(player.current_guesses)
+        player.record.guess_count += len(player.current_word.guesses)
     # track guesses after loss
-    elif len(player.current_guesses) == 6:
+    elif len(player.current_word.guesses) == 6:
         player.record.guess_count += 6 
 
-    grey = []
-    yellow = []
-    yellow_idx = []
-    green = []
-    # check if in word (set to yellow)
-
     # check one to one positions for green
-    # if green -1 for dict count
-    # second iteration for yellow - if in dict and not in green and count > 0 add yellow and yellow idx, else add grey
-    colors = {}
     tally = dict()
     for c in word:
         if c in tally:
@@ -202,22 +204,15 @@ def guess(player, guess, registered_players):
         else:
             tally[c] = 1
 
-    colors = dict()
+    colors = {}
     # check one to one positions for green tiles
-    for i, c in enumerate(guess):
+    for i, c in enumerate(guess_string):
         if c == word[i]:
             colors[i] = "green"
             tally[c] -= 1
 
-    # check if in position (set to green)
-    for idx in yellow_idx:
-        if guess[idx] == player.current_word.word[idx]:
-            green.append(guess[idx])
-            yellow.remove(guess[idx])
-
-    new_guess = Guess(guess_str, colors)
     # check for yellow
-    for i, c in enumerate(guess):
+    for i, c in enumerate(guess_string):
         if i not in colors:
             if c in word and tally[c] > 0:
                 colors[i] = "yellow"
@@ -225,7 +220,7 @@ def guess(player, guess, registered_players):
             else:
                 colors[i] = "grey"
 
-    new_guess = Guess(guess_string, colors)
+    new_guess = Guess(guess=guess_string, colors=colors)
     player.current_word.guesses.append(new_guess)
     
 def guess_validation(guess_string, word):
@@ -254,7 +249,7 @@ def print_board(player):
         for guess in player.current_word.guesses:
             print_board_line(guess)
 
-        for i in range(6 - len(player.current_guesses)):
+        for i in range(6 - len(player.current_word.guesses)):
             print_empty_board_line()
 
 def print_empty_board_line():
@@ -267,16 +262,16 @@ def print_board_line(guess):
     
     guess_line = ""
     for i, c in enumerate(guess.guess):
-        color = guess.colors[i]
+        color = guess.colors[str(i)]
         guess_line += "* "
         match color:
             case "green": 
-                guess_line += "\033[32m" + c + "\033[32m"
+                guess_line += "\033[32m" + c + "\033[32m" + "\033[0m"
             case "yellow":
-                guess_line += "\033[33m" + c + "\033[33m"
+                guess_line += "\033[33m" + c + "\033[33m" + "\033[0m"
             case "grey":
-                guess_line += "\033[37m" + c + "\033[37m"
-        guess_line += " *"
+                guess_line += "\033[37m" + c + "\033[37m" + "\033[0m"
+        guess_line += " *  "
     print(guess_line)
 
     print("*****  *****  *****  *****  *****")
@@ -284,7 +279,7 @@ def print_board_line(guess):
 def leaderboard(registered_players):
     sorted_players = player_sort(registered_players)
     for i, player in enumerate(registered_players):
-        print(f"{i + 1}. {player.name} - Wins: {player.record.wins}, Guesses: {player.record.losses}")
+        print(f"{i + 1}. {player.name} - Wins: {player.record.wins}, Guesses: {player.record.guess_count}")
 
 def player_sort(registered_players):
     least_guesses = min(player.record.guess_count for player in registered_players)

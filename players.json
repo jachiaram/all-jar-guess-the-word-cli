@@ -1,17 +1,25 @@
 [
     {
         "name": "alex",
-        "current_word_index": 48,
+        "current_word_index": 0,
         "current_word": {
-            "word": "unread",
-            "result": null,
-            "guesses": []
+            "word": "hush",
+            "guesses": [
+                {
+                    "guess": "hush",
+                    "colors": {
+                        "0": "green",
+                        "1": "green",
+                        "2": "green",
+                        "3": "green"
+                    }
+                }
+            ]
         },
         "game_in_progress": true,
         "seen_words": [
             {
-                "word": "unread",
-                "result": null,
+                "word": "hush",
                 "guesses": []
             }
         ],
