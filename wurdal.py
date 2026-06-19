@@ -189,7 +189,7 @@ def guess(player_name, guess_string, registered_players):
     # guess validation
     guess_validation(guess_string, word)
 
-    if guess == word:
+    if guess_string == word:
         player.record.wins += 1
         player.record.guess_count += len(player.current_word.guesses)
     # track guesses after loss
@@ -240,10 +240,12 @@ def print_board(player):
         print("Error: No active game")
         sys.exit(1)
         
+    count = len(player.current_word.word)
+
     # if player has not made any guesses yet, print empty board
     if len(player.current_word.guesses) == 0:
         for i in range(6):
-            print_empty_board_line()
+            print_empty_board_line(count)
     else:
         # print game with guesses
         for guess in player.current_word.guesses:
@@ -252,10 +254,14 @@ def print_board(player):
         for i in range(6 - len(player.current_word.guesses)):
             print_empty_board_line()
 
-def print_empty_board_line():
-    print("*****  *****  *****  *****  *****")
-    print("*   *  *   *  *   *  *   *  *   *")
-    print("*****  *****  *****  *****  *****")
+def print_empty_board_line(count):
+    for i in range(count):
+        print_empty_board_space()
+
+def print_empty_board_space():
+    print("*****  ")
+    print("*   *  ")
+    print("*****  ")
 
 def print_board_line(guess):
     print("*****  *****  *****  *****  *****")
