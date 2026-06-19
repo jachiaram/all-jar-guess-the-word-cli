@@ -1,10 +1,20 @@
 [
     {
         "name": "alex",
-        "current_word_index": -1,
-        "current_word": null,
-        "game_in_progress": false,
-        "seen_words": [],
+        "current_word_index": 48,
+        "current_word": {
+            "word": "unread",
+            "result": null,
+            "guesses": []
+        },
+        "game_in_progress": true,
+        "seen_words": [
+            {
+                "word": "unread",
+                "result": null,
+                "guesses": []
+            }
+        ],
         "record": {
             "wins": 0,
             "guess_count": 0
