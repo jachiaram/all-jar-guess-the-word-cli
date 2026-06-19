@@ -167,35 +167,40 @@ def guess(player, guess, registered_players):
     elif len(player.current_guesses) == 6:
         player.record.guess_count += 6 
 
-    grey = []
-    yellow = []
-    yellow_idx = []
-    green = []
-    # check if in word (set to yellow)
-
-    # check one to one positions for green
-    # if green -1 for dict count
-    # second iteration for yellow - if in dict and not in green and count > 0 add yellow and yellow idx, else add grey
-
-    for i, c in enumerate(guess):
-        if c in player.current_word.word:
-            # dict check
-            # if in dict check count
-                # if count == 0 
-                    # add grey
-                    # online
-                    # xxxxee
-                # else add yellow and yellow idx
-            yellow.append(c)
-            yellow_idx.append(i)
+    tally = dict()
+    for c in word:
+        if c in tally:
+            tally[c] = tally[c] + 1
         else:
-            grey.append(c)
+            tally[c] = 1
 
-    # check if in position (set to green)
-    for idx in yellow_idx:
-        if guess[idx] == player.current_word.word[idx]:
-            green.append(guess[idx])
-            yellow.remove(guess[idx])
+    # check one to one positions for green tiles
+    for i, c in enumerate(guess):
+        if c == word[i]:
+            # add green to 
+
+    # for i, c in enumerate(guess):
+    #     # check for green
+    #     if c == word[i]:
+    #         green.append(c)
+    #     if c in player.current_word.word:
+    #         # dict check
+    #         # if in dict check count
+    #             # if count == 0 
+    #                 # add grey
+    #                 # online
+    #                 # xxxxee
+    #             # else add yellow and yellow idx
+    #         yellow.append(c)
+    #         yellow_idx.append(i)
+    #     else:
+    #         grey.append(c)
+
+    # # check if in position (set to green)
+    # for idx in yellow_idx:
+    #     if guess[idx] == player.current_word.word[idx]:
+    #         green.append(guess[idx])
+    #         yellow.remove(guess[idx])
     
 def guess_validation(guess, word):
     # checks the length of the guess
