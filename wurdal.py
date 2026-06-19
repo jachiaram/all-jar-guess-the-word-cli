@@ -109,7 +109,7 @@ def register(player_name, registered_players):
 
     # if player name does not contain only letters, numbers, hyphens, and underscores
     pattern = r'^[a-zA-Z0-9_-]+$'
-    if (re.match(pattern, player_name)) == False:
+    if not re.match(pattern, player_name):
         print("Error: invalid player name")
         sys.exit(1)
     
@@ -130,7 +130,7 @@ def new_game(player_name, registered_players):
     player = registered_players[i]
     
     # if player is already in a game
-    if player.game_in_progress == True:
+    if player.game_in_progress:
         print("Error: game in progress")
         sys.exit(1) 
 
@@ -163,7 +163,7 @@ def guess(player_name, guess_string, registered_players):
     idx, player = find_player(player_name, registered_players) 
 
     # if game has not started yet
-    if player.game_in_progress == False:
+    if not player.game_in_progress:
         print("Error: no active game")
         sys.exit(1)
 
@@ -224,13 +224,13 @@ def guess_validation(guess_string, word):
         sys.exit(1)
     
     # checks if the guess is all letters
-    if guess_string.isalpha() == False:
+    if not guess_string.isalpha():
         print("Error: invalid guess")
         sys.exit(1)
 
 def print_board(player):
     # if game has not started yet
-    if player.game_in_progress == False:
+    if not player.game_in_progress:
         print("Error: no active game")
         sys.exit(1)
         
