@@ -218,7 +218,7 @@ def load_players():
         return TypeAdapter(list[Player]).validate_json(json_data)
     except FileNotFoundError:
         print("Error: File Not Found")
-    except ValidationError as e:
+    except ValidationError:
         print("Error: Invalid Json")
 
 
