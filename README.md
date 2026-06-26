@@ -14,6 +14,7 @@ pipenv shell
 ```
 
 ## Bash Scripting Wurdal Command
+
 Add this line to your ```~/.zshrc``` file.
 ```export PATH=$PATH:~/path/to/workspace/all-jar-guess-the-word-cli/bin```
 Then open a new terminal and you should be good to run the cmd.
@@ -24,6 +25,11 @@ cd into src of the project before running.
 `wurdal <cmd>`
 
 ## API Development Commands
+
+### Set up location of database
+
+- create a file called `.env` in the root of your project
+- add the following: ```DATABASE_URL=postgresql+psycopg://localhost/players```
 
 ### Start the development server
 

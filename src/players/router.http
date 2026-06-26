@@ -1,0 +1,18 @@
+###
+GET http://localhost:8000/players/33/board
+
+###
+GET http://localhost:8000/players/33/board
+Authorization: Bearer 33
+
+###
+GET http://localhost:8000/players/34/board
+Authorization: Bearer 34
+
+###
+GET http://localhost:8000/players/36/board
+Authorization: Bearer 36
+
+###
+GET http://localhost:8000/players/33/board
+Authorization: Bearer invalid-token
