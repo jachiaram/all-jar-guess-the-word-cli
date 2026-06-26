@@ -2,9 +2,11 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from app.session_router import router as session_router
+from app.games_guesses_router import router as games_guesses_router
 
 app = FastAPI()
 app.include_router(session_router, prefix="/sessions", tags=["sessions"])
+app.include_router(games_guesses_router, tags=["games", "guesses"])
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
