@@ -8,6 +8,8 @@ pydantic = "*"
 fastapi = "*"
 uvicorn = "*"
 sqlalchemy = "*"
+psycopg = "*"
+alembic = "*"
 
 [dev-packages]
 pytest = "*"
