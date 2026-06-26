@@ -18,7 +18,7 @@ class Player(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
 
-class PlayersRegister(BaseModel):
+class PlayerRegister(BaseModel):
     model_config = ConfigDict(
         alias_generator=to_camel,
         populate_by_name=True,
@@ -26,7 +26,7 @@ class PlayersRegister(BaseModel):
 
     name: str
 
-class PlayerCreate(BaseModel):
+class PlayerRead(BaseModel):
     model_config = ConfigDict(
         alias_generator=to_camel,
         populate_by_name=True,
@@ -36,9 +36,9 @@ class PlayerCreate(BaseModel):
     id: int
     name: str
 
-@app.post("", response_model=PlayerCreate, status_code=201)
+@app.post("", response_model=PlayerRead, status_code=201)
 def create_player(
-    player: PlayersRegister,
+    player: PlayerRegister,
     db: Session = Depends(create_database_session)
 ):
     if not player.name.strip():
@@ -57,7 +57,22 @@ def create_player(
 
     return db_player
 
-
+@app.post("/sessions", response_model=PlayerRead, status_code=200)
+def get_player_by_id(
+    player: PlayerRegister,
+    db: Session = Depends(create_database_session)
+):
+    if not player.name.strip():
+        raise HTTPException(status_code=422, detail={"error": {"description": "Name is required"}})
+    
+    player_name = player.name.replace(" ", "").lower()
+    
+    existing_player = db.query(Player).filter(Player.name == player_name).first()
+    if not existing_player:
+        raise HTTPException(status_code=422, detail={"error": {"description": "Player not found"}})
+    
+    return existing_player
+    
 MOCK_DATA_PATH = Path(__file__).with_name("mock.json")
 
 

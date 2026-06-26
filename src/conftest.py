@@ -12,6 +12,7 @@ def player_factory():
         in_progress=True,
         seen_words=None,
         wins=0,
+        losses=0,
         guess_count=0,
         current_word_index=0,
     ):
@@ -33,7 +34,7 @@ def player_factory():
             current_word=current_word,
             game_in_progress=in_progress,
             seen_words=seen_words,
-            record=Record(wins=wins, guess_count=guess_count),
+            record=Record(wins=wins, losses=losses, guess_count=guess_count),
         )
 
     return _make_player
