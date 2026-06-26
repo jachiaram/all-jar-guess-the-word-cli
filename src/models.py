@@ -10,6 +10,7 @@ class Word(BaseModel):
 
 class Record(BaseModel):
     wins: int
+    losses: int = 0
     guess_count: int
 
 class Player(BaseModel):

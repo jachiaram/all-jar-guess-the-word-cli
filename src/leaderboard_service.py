@@ -1,6 +1,21 @@
 from models import Player
 
 
+def get_leaderboard_data(registered_players: list[Player]) -> dict:
+    sorted_players = player_sort(registered_players)
+    players = []
+    for player in sorted_players:
+        wins = player.record.wins
+        average_guesses = round(player.record.guess_count / wins, 1) if wins > 0 else 0.0
+        players.append({
+            "name": player.name,
+            "wins": wins,
+            "losses": player.record.losses,
+            "averageGuesses": average_guesses,
+        })
+    return {"players": players}
+
+
 def leaderboard(registered_players: list[Player]):
     """
     Sorts the players by wins and prints the leaderboard.
