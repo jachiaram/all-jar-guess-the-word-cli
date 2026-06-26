@@ -35,10 +35,13 @@ def login(player_name: str, registered_players: list):
     # Display welcome message
     print(f"May the odds be in your favor {player_name}!")
 
-    # Fetch and display board from API
+    # Fetch board from API
     board_data = api_client.fetch_board(user_id)
     if board_data:
-        board_service.print_board(board_data)
+        # TODO: Convert API board response to Player object or handle display
+        # For now, just confirm login succeeded
+        #board_service.print_board(board_data)
+        pass
 
 
 def logout():
