@@ -1,2 +1,6 @@
 #! /bin/sh
-python ../src/wurdal.py $@
+if [ "$1" = "guess" ] && [ $# -eq 2 ]; then
+    python ../src/server_guess/cli.py "$2"
+else
+    python ../src/wurdal.py $@
+fi
