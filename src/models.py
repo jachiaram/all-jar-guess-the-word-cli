@@ -1,8 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
+
+class Letter(BaseModel):
+    letter: str
+    match: str
 
 class Guess(BaseModel):
-    guess: str
-    colors: dict
+    letters: list[Letter]
+
+class GuessList(RootModel[list[Guess]]):
+    pass
 
 class Word(BaseModel):
     word: str

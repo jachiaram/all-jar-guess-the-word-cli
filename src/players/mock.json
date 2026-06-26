@@ -1,0 +1,165 @@
+[
+  {
+    "user": {
+      "id": 33,
+      "name": "Tom"
+    },
+    "current": {
+      "length": 6,
+      "guesses": [
+        {
+          "letters": [
+            {
+              "letter": "B",
+              "match": "full"
+            },
+            {
+              "letter": "U",
+              "match": "full"
+            },
+            {
+              "letter": "B",
+              "match": "none"
+            },
+            {
+              "letter": "B",
+              "match": "full"
+            },
+            {
+              "letter": "L",
+              "match": "full"
+            },
+            {
+              "letter": "Y",
+              "match": "partial"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "status": "in-progress",
+        "word": "BUYBLE"
+      }
+    }
+  },
+  {
+    "user": {
+      "id": 34,
+      "name": "Ana"
+    },
+    "current": {
+      "length": 5,
+      "guesses": [],
+      "result": {
+        "status": "in-progress",
+        "word": null
+      }
+    }
+  },
+  {
+    "user": {
+      "id": 35,
+      "name": "Raj"
+    },
+    "current": {
+      "length": 6,
+      "guesses": [
+        {
+          "letters": [
+            {
+              "letter": "C",
+              "match": "none"
+            },
+            {
+              "letter": "A",
+              "match": "partial"
+            },
+            {
+              "letter": "N",
+              "match": "none"
+            },
+            {
+              "letter": "D",
+              "match": "full"
+            },
+            {
+              "letter": "L",
+              "match": "partial"
+            },
+            {
+              "letter": "E",
+              "match": "none"
+            }
+          ]
+        },
+        {
+          "letters": [
+            {
+              "letter": "D",
+              "match": "full"
+            },
+            {
+              "letter": "O",
+              "match": "full"
+            },
+            {
+              "letter": "O",
+              "match": "none"
+            },
+            {
+              "letter": "D",
+              "match": "full"
+            },
+            {
+              "letter": "L",
+              "match": "full"
+            },
+            {
+              "letter": "E",
+              "match": "partial"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "status": "in-progress",
+        "word": null
+      }
+    }
+  },
+  {
+    "user": {
+      "id": 36,
+      "name": "Mia"
+    },
+    "current": {
+      "length": 4,
+      "guesses": [
+        {
+          "letters": [
+            {
+              "letter": "S",
+              "match": "full"
+            },
+            {
+              "letter": "E",
+              "match": "full"
+            },
+            {
+              "letter": "A",
+              "match": "full"
+            },
+            {
+              "letter": "L",
+              "match": "full"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "status": "won",
+        "word": "SEAL"
+      }
+    }
+  }
+]
