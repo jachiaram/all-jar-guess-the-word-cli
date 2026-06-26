@@ -15,7 +15,7 @@ pipenv shell
 
 ## Bash Scripting Wurdal Command
 Add this line to your ```~/.zshrc``` file.
-```echo PATH=$PATH:~/path/to/workspace/bin/all-jar-guess-the-word-cli```
+```export PATH=$PATH:~/path/to/workspace/all-jar-guess-the-word-cli/bin```
 Then open a new terminal and you should be good to run the cmd.
 
 ## CLI run command
