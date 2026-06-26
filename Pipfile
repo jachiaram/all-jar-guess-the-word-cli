@@ -5,9 +5,20 @@ name = "package-manager.aa.com"
 
 [packages]
 pydantic = "*"
+fastapi = "*"
+httpx = "*"
+uvicorn = "*"
+sqlalchemy = "*"
+psycopg = "*"
+alembic = "*"
+
 
 [dev-packages]
 pytest = "*"
 
 [requires]
 python_version = "3.14"
+
+[scripts]
+tmp='uvicorn api:app --host 0.0.0.0 --port 8000 --reload'
+dev = "uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"

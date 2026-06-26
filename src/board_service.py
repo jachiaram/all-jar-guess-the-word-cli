@@ -1,6 +1,36 @@
 import sys
-from models import Player, Guess
+from models import Player, Guess, GuessList
+from httpx import AsyncClient
 
+
+async def call_board_api(player_id: int):
+    # TODO: hook up logit for checking current session
+    # if not player_id == session_id:
+    #     print('Login to continue')
+    #     pass
+    
+    try:
+        async with AsyncClient() as client:
+            response = await client.get(
+                f"http://localhost:8000/players/{player_id}/board",
+                headers={"Authorization": f"Bearer {player_id}"},
+            )
+        player = response.json()
+        guesses = GuessList.model_validate(player["current"]["guesses"]).root
+
+        if len(guesses) == 0:
+            for i in range(6):
+                print_empty_board_line(player["current"]["length"])
+        else:
+            for guess in guesses:
+                print_board_line(guess)
+
+            for i in range(6 - len(guesses)):
+                print_empty_board_line(player["current"]["length"])
+        
+    except ConnectionError:
+        print('Looks like the wurdal servers are taking a loss... try again later!')
+        sys.exit(2)
 
 def print_board(player: Player):
     """
@@ -71,19 +101,25 @@ def print_board_line(guess: Guess):
 
     :param guess: a Guess object *
     """
-    count = len(guess.guess)
+    match_to_color = {
+        "full": "green",
+        "partial": "yellow",
+        "none": "grey",
+    }
+
+    count = len(guess.letters)
     line = ""
 
-    for i in range(count):
-        color = guess.colors[str(i)]
+    for letter in guess.letters:
+        color = match_to_color.get(letter.match, "grey")
         line += print_color(color, "*****  ")
 
     print(line)
     guess_line = ""
-    for i, c in enumerate(guess.guess):
-        color = guess.colors[str(i)]
+    for letter in guess.letters:
+        color = match_to_color.get(letter.match, "grey")
         guess_line += print_color(color, "* ")
-        guess_line += c
+        guess_line += letter.letter
         guess_line += print_color(color, " *  ")
     print(guess_line)
     print(line)
