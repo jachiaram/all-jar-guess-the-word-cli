@@ -10,6 +10,7 @@ app.include_router(session_router, prefix="/sessions", tags=["sessions"])
 app.include_router(games_guesses_router, tags=["games", "guesses"])
 app.include_router(board_router, tags=["board"])
 
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     missing_name = any(
@@ -17,6 +18,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         for error in exc.errors()
     )
     if missing_name:
-        return JSONResponse(status_code=422, content={"description": "Name is required"})
+        return JSONResponse(status_code=422, content={"detail": "Name is required"})
     else:
-        return JSONResponse(status_code=422, content={"description": "Invalid request body"})
+        return JSONResponse(status_code=422, content={"detail": "Invalid request body"})

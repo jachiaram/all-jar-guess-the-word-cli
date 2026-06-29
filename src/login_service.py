@@ -13,6 +13,8 @@ def login(player_name: str, registered_players: list):
     :param player_name: Player name to be logged in
     :param registered_players: a list of Player objects
     """
+    player_name = str.lower(player_name)
+
     # if player name is empty
     if player_name == "":
         print("Error: invalid player name")
@@ -45,7 +47,6 @@ def login(player_name: str, registered_players: list):
         #board_service.print_board(board_data)
         pass
     # if player does not exist
-    print(registered_players)
     if not any(player.get("name").strip().lower() == player_name.strip().lower() for player in registered_players):
         print(f"Could not find user {player_name}. Please register")
         print(f"Please run 'wurdal register {player_name}' to register")
