@@ -3,7 +3,11 @@ from models import Guess, GuessList
 from httpx import AsyncClient
 
 
-async def call_board_api(player_id: int):
+async def call_board_api(player_id: int | None):
+    if player_id is None:
+        print("Please login to continue")
+        sys.exit(2)
+
     try:
         async with AsyncClient() as client:
             response = await client.get(
@@ -23,7 +27,6 @@ async def call_board_api(player_id: int):
 
             for i in range(6 - len(guesses)):
                 print_empty_board_line(player["current"]["length"])
-
     except ConnectionError:
         print("Looks like the wurdal servers are taking a loss... try again later!")
         sys.exit(2)
