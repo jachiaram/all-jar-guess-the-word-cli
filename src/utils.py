@@ -62,6 +62,7 @@ def parse_args():
         "--by-games", action="store_true", help="Sort by number of games played"
     )
 
+    subparsers.add_parser("logout", help="Logout the current player")
     return parser.parse_args()
 
 
