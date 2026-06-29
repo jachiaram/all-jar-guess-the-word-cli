@@ -2,15 +2,16 @@ import sys
 import re
 from models import Player, Record
 
+
 def register(player_name: str, registered_players: list[Player]):
     """
     Checks if a valid player_name was given and registers a new player.
 
-    :param player_name: New unique player_name to be registered 
+    :param player_name: New unique player_name to be registered
     :param registered_players: a list of Player objects
     """
     player_name = str.lower(player_name)
-    
+
     # if player name is empty
     if player_name == "":
         print("Error: invalid player name")

@@ -1,14 +1,9 @@
 import sys
-from models import Player, Guess, GuessList
+from models import Guess, GuessList
 from httpx import AsyncClient
 
 
 async def call_board_api(player_id: int):
-    # TODO: hook up logit for checking current session
-    # if not player_id == session_id:
-    #     print('Login to continue')
-    #     pass
-    
     try:
         async with AsyncClient() as client:
             response = await client.get(
@@ -16,6 +11,7 @@ async def call_board_api(player_id: int):
                 headers={"Authorization": f"Bearer {player_id}"},
             )
         player = response.json()
+        print(player)
         guesses = GuessList.model_validate(player["current"]["guesses"]).root
 
         if len(guesses) == 0:
@@ -27,35 +23,10 @@ async def call_board_api(player_id: int):
 
             for i in range(6 - len(guesses)):
                 print_empty_board_line(player["current"]["length"])
-        
+
     except ConnectionError:
-        print('Looks like the wurdal servers are taking a loss... try again later!')
+        print("Looks like the wurdal servers are taking a loss... try again later!")
         sys.exit(2)
-
-def print_board(player: Player):
-    """
-    Validates the Player status and prints the game board.
-
-    :param player: a Player object *
-    """
-    # if game has not started yet
-    if not player.game_in_progress:
-        print("Error: no active game")
-        sys.exit(1)
-
-    count = len(player.current_word.word)
-
-    # if player has not made any guesses yet, print empty board
-    if len(player.current_word.guesses) == 0:
-        for i in range(6):
-            print_empty_board_line(count)
-    else:
-        # print game with guesses
-        for guess in player.current_word.guesses:
-            print_board_line(guess)
-
-        for i in range(6 - len(player.current_word.guesses)):
-            print_empty_board_line(count)
 
 
 def print_empty_board_line(count: int):
@@ -76,7 +47,7 @@ def print_empty_board_line(count: int):
 
 def print_color(color: str, to_print: str):
     """
-    Matches the given color to the ANSI color code and returns the string 
+    Matches the given color to the ANSI color code and returns the string
     with the color code.
 
     :param color: color for the given string *
@@ -107,7 +78,6 @@ def print_board_line(guess: Guess):
         "none": "grey",
     }
 
-    count = len(guess.letters)
     line = ""
 
     for letter in guess.letters:

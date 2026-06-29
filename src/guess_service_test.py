@@ -64,7 +64,8 @@ def test_guess_win_updates_record_and_ends_game(player_factory, monkeypatch, cap
 
 def test_guess_loss_on_sixth_attempt_updates_stats(player_factory, monkeypatch):
     existing_guesses = [
-        Guess(guess="aaaaa", colors={str(i): "grey" for i in range(5)}) for _ in range(5)
+        Guess(guess="aaaaa", colors={str(i): "grey" for i in range(5)})
+        for _ in range(5)
     ]
     player = player_factory(
         name="amy",

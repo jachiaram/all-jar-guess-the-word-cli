@@ -1,23 +1,29 @@
 from pydantic import BaseModel, RootModel
 
+
 class Letter(BaseModel):
     letter: str
     match: str
 
+
 class Guess(BaseModel):
     letters: list[Letter]
 
+
 class GuessList(RootModel[list[Guess]]):
     pass
+
 
 class Word(BaseModel):
     word: str
     guesses: list[Guess]
 
+
 class Record(BaseModel):
     wins: int
     losses: int = 0
     guess_count: int
+
 
 class Player(BaseModel):
     name: str

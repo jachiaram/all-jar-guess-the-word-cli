@@ -11,6 +11,7 @@ uvicorn = "*"
 sqlalchemy = "*"
 psycopg = "*"
 alembic = "*"
+ruff = "*"
 
 
 [dev-packages]
@@ -20,5 +21,4 @@ pytest = "*"
 python_version = "3.14"
 
 [scripts]
-tmp='uvicorn api:app --host 0.0.0.0 --port 8000 --reload'
 dev = "uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"

@@ -1,6 +1,7 @@
 import sys
 import random
-from board_service import print_board
+
+# from board_service import print_board
 from models import Player, Word
 from utils import player_to_list
 
@@ -38,7 +39,7 @@ def new_game(player_name: str, registered_players: list[Player], word_list: list
     player.game_in_progress = True
     player = player_to_list(player, i, registered_players)
     print("✨ New game started ✨")
-    print_board(player)
+    # print_board(player)
 
 
 def select_word(player: Player, word_list: list[str]):

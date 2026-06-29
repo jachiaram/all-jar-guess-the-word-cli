@@ -6,13 +6,17 @@ def get_leaderboard_data(registered_players: list[Player]) -> dict:
     players = []
     for player in sorted_players:
         wins = player.record.wins
-        average_guesses = round(player.record.guess_count / wins, 1) if wins > 0 else 0.0
-        players.append({
-            "name": player.name,
-            "wins": wins,
-            "losses": player.record.losses,
-            "averageGuesses": average_guesses,
-        })
+        average_guesses = (
+            round(player.record.guess_count / wins, 1) if wins > 0 else 0.0
+        )
+        players.append(
+            {
+                "name": player.name,
+                "wins": wins,
+                "losses": player.record.losses,
+                "averageGuesses": average_guesses,
+            }
+        )
     return {"players": players}
 
 
@@ -36,6 +40,6 @@ def player_sort(registered_players: list[Player]):
     Sorts the list of Player objects by wins in descending order.
 
     :param registered_players: a list of Player objects *
-    :returns: sorted list of Player objects 
+    :returns: sorted list of Player objects
     """
     return sorted(registered_players, key=lambda x: (-x.record.wins, x.name))

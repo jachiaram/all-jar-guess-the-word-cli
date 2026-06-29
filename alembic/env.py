@@ -4,7 +4,7 @@ from logging.config import fileConfig
 
 from alembic import context
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), "src"))
 from core.database import engine
 
 config = context.config

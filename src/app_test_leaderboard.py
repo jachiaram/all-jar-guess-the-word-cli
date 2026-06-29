@@ -11,6 +11,7 @@ from leaderboard_service import get_leaderboard_data
 
 # --- Unit tests for response data ---
 
+
 def test_leaderboard_returns_players_with_stats(player_factory):
     players = [
         player_factory(name="Alice", wins=4, losses=5, guess_count=10),
@@ -56,6 +57,7 @@ def test_leaderboard_empty(player_factory):
 
 
 # --- Integration tests for HTTP endpoint ---
+
 
 @pytest.fixture(scope="module")
 def server():

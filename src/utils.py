@@ -16,11 +16,11 @@ def read_in_word_list():
     return: words: list of words for the player to guess.
     """
     try:
-        with open('../src/word_list.txt', 'r') as f:
+        with open("../src/word_list.txt", "r") as f:
             words = f.read().split("\n")
         return words
     except FileNotFoundError:
-        print("Word list not found.")        
+        print("Word list not found.")
         sys.exit(3)
 
 
@@ -54,10 +54,7 @@ def parse_args():
     guess_parser.add_argument("player_name", metavar="player-name")
     guess_parser.add_argument("word")
 
-    board_parser = subparsers.add_parser(
-        "board", help="Board", usage="%(prog)s <player-name>"
-    )
-    board_parser.add_argument("player_name", metavar="player-name")
+    subparsers.add_parser("board", help="Board", usage="%(prog)s <player-name>")
 
     # wurdal leaderboard [--by-games]
     leaderboard_parser = subparsers.add_parser("leaderboard", help="Show leaderboard")
@@ -102,7 +99,7 @@ def write_players(registered_players: list[Player]):
 def find_player(player_name: str, registered_players: list[Player]):
     """
     Load players from persisted storage
-    
+
     :param player_name: a name of a player to be found
     :param registered_players: a list of registered players
     return: i: index of player in the list

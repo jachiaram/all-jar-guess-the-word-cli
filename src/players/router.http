@@ -2,8 +2,8 @@
 GET http://localhost:8000/players/33/board
 
 ###
-GET http://localhost:8000/players/33/board
-Authorization: Bearer 33
+GET http://localhost:8000/players/1/board
+Authorization: Bearer 1
 
 ###
 GET http://localhost:8000/players/34/board
@@ -16,3 +16,19 @@ Authorization: Bearer 36
 ###
 GET http://localhost:8000/players/33/board
 Authorization: Bearer invalid-token
+
+###
+POST http://localhost:8000/players
+Content-Type: application/json
+
+{
+    "name": "Jared"
+}
+
+###
+POST http://localhost:8000/players/sessions
+Content-Type: application/json
+
+{
+    "name": "Jared"
+}
