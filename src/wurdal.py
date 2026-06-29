@@ -3,7 +3,7 @@ import asyncio
 import register_service
 import board_service
 import guess_service
-from utils import load_players, parse_args, write_players
+from utils import load_players, parse_args
 
 
 async def main():
@@ -12,8 +12,7 @@ async def main():
     args = parse_args()
 
     if args.command == "register":
-        # TODO: hook up register api so players can be registered to the database
-        register_service.register(args.player_name, registered_players)
+        await register_service.register(args.player_name)
     elif args.command == "login":
         # TODO: hook up login function so that it calls created api
         pass

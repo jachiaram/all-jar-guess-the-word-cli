@@ -1,2 +1,2 @@
 #! /bin/sh
-python ../src/wurdal.py $@
+python ../src/wurdal.py "$@"

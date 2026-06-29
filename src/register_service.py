@@ -1,38 +1,74 @@
 import sys
-import re
-from models import Player, Record
+import httpx
+import board_service
+from board_service import print_board_line, print_empty_board_line
+from models import GuessList
+from session_service import save_player_session, load_player_session
 
 
-def register(player_name: str, registered_players: list[Player]):
-    """
-    Checks if a valid player_name was given and registers a new player.
+def print_board_from_response(board_payload: dict):
+    current = board_payload.get("current", {}) if isinstance(board_payload, dict) else {}
+    length = current.get("length")
+    guesses_payload = current.get("guesses", [])
 
-    :param player_name: New unique player_name to be registered
-    :param registered_players: a list of Player objects
-    """
-    player_name = str.lower(player_name)
+    if not isinstance(length, int) or length <= 0:
+        print("Unable to display board right now.")
+        return
 
-    # if player name is empty
-    if player_name == "":
-        print("Error: invalid player name")
+    try:
+        guesses = GuessList.model_validate(guesses_payload).root
+    except Exception:
+        print("Unable to display board right now.")
+        return
+
+    if len(guesses) == 0:
+        for _ in range(6):
+            print_empty_board_line(length)
+        return
+
+    for guess in guesses:
+        print_board_line(guess)
+
+    for _ in range(max(0, 6 - len(guesses))):
+        print_empty_board_line(length)
+
+
+async def register(player_name: str):
+    player_name = str.lower(player_name).strip()
+    
+    try:
+        response = httpx.post(
+            "http://localhost:8000/players",
+            json={"name": player_name}
+        )
+        
+        if response.status_code == 201:
+            player_data = response.json()
+            print(f"May the odds be in your favor {player_data['name']}!\n")
+
+            player_id = player_data.get("id")
+            if isinstance(player_id, int):
+                save_player_session(player_id)
+                await board_service.call_board_api(load_player_session())
+                
+        elif response.status_code == 422:
+            error_detail = response.json()
+            error_msg = error_detail.get("detail", {}).get("error", {}).get("description", "Invalid player name")
+            
+            if error_msg == "Name must be unique":
+                print("That name is already taken. Please choose another.")
+            elif error_msg == "Name is required":
+                print("Name cannot be empty.")
+            elif error_msg == "Invalid player name":
+                print("Invalid player name. Please use only letters, numbers, underscores, or hyphens.")
+                
+            sys.exit(1)
+        else:
+            print(f"Failed to register player (status code: {response.status_code})")
+            sys.exit(1)
+    except httpx.ConnectError:
+        print("Looks like the wurdal servers are taking a loss... try again later!")
         sys.exit(1)
-
-    # if player already exists
-    if any(player.name == player_name for player in registered_players):
-        print("Error: player already exists")
+    except Exception as e:
+        print(f"Error: {str(e)}")
         sys.exit(1)
-
-    # if player name does not contain only letters, numbers, hyphens, and underscores
-    pattern = r"^[a-zA-Z0-9_-]+$"
-    if not re.match(pattern, player_name):
-        print("Error: invalid player name")
-        sys.exit(1)
-
-    player = Player(
-        name=player_name,
-        current_word_index=-1,
-        seen_words=[],
-        game_in_progress=False,
-        record=Record(wins=0, guess_count=0),
-    )
-    registered_players.append(player)
