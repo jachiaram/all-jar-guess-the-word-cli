@@ -41,11 +41,11 @@ def parse_args():
         metavar="player-name",
     )
 
-    # wurdal new-game <player-name>
-    new_game_parser = subparsers.add_parser(
-        "new-game", help="Start a new game", usage="%(prog)s <player-name>"
+    # wurdal login <player-name>
+    login_parser = subparsers.add_parser(
+        "login", help="Login an existing player", usage="%(prog)s <player-name>"
     )
-    new_game_parser.add_argument("player_name", metavar="player-name")
+    login_parser.add_argument("player_name", metavar="player-name")
 
     # wurdal guess <player-name> <word>
     guess_parser = subparsers.add_parser(

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import asyncio
+import login_service
 import register_service
 import board_service
 import guess_service
@@ -15,7 +16,7 @@ async def main():
         await register_service.register(args.player_name)
     elif args.command == "login":
         # TODO: hook up login function so that it calls created api
-        pass
+        await login_service.login(args.player_name)
     elif args.command == "guess":
         guess_service.guess(args.player_name, args.word, registered_players)
     elif args.command == "board":
